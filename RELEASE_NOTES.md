@@ -2,7 +2,10 @@
 
 ## Current Private Release
 
-
+- Release build uses embedded, obfuscated protected application assets
+  (risk objectives, personas, persona state machine, bot-move taxonomy,
+  language variants, response-generation/judge prompts, compliance
+  framework map) — none of these ship as loose readable files.
 - Runtime tools (llama-server, whisper-server, piper, piper-tts-server,
   sherpa-onnx STT/TTS, veriturn-nemotron-stt) are pre-packaged binaries; no
   build tooling is required on the install machine.

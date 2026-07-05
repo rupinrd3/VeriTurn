@@ -207,7 +207,11 @@ for name in sorted(expected):
 PY
 rm -f "$uploaded_json"
 
+echo "Publishing the release (moving from Draft to Published)..."
+gh release edit "$VERSION" --draft=false --repo "$REPO"
+
 echo
-echo "Upload complete."
+echo "Upload and publish complete."
 echo "Release: $VERSION"
 echo "Repository: $REPO"
+
