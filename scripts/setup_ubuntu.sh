@@ -64,6 +64,12 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RELEASE_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Auto-detect custom VERITURN_HOME if a .shim file or directory exists in the release root
+if [[ -z "${VERITURN_HOME:-}" && -e "$RELEASE_ROOT/.shim" ]]; then
+  export VERITURN_HOME="$RELEASE_ROOT"
+fi
+
 ROOT="${VERITURN_HOME:-$HOME/.veriturn}"
 DOWNLOADS="$ROOT/downloads"
 STAGING="$ROOT/staging"
@@ -653,10 +659,14 @@ fi
 if [[ -z "$MANIFEST" ]]; then
   MANIFEST_IN_ROOT="$(find "$RELEASE_ROOT" -maxdepth 1 -type f -name 'veriturn-release-manifest-*.json' | head -n 1 || true)"
   if [[ -n "$MANIFEST_IN_ROOT" ]]; then
-    cp "$MANIFEST_IN_ROOT" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    if [[ "$(realpath -m "$MANIFEST_IN_ROOT")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
+      cp "$MANIFEST_IN_ROOT" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    fi
     MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
   elif [[ -f "$RELEASE_ROOT/RELEASE_MANIFEST.json" ]]; then
-    cp "$RELEASE_ROOT/RELEASE_MANIFEST.json" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    if [[ "$(realpath -m "$RELEASE_ROOT/RELEASE_MANIFEST.json")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
+      cp "$RELEASE_ROOT/RELEASE_MANIFEST.json" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    fi
     MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
   fi
 fi
@@ -674,7 +684,9 @@ if [[ -z "$MANIFEST" ]]; then
   echo "Release manifest was not found locally or downloaded for $VERSION." >&2
   exit 1
 fi
-cp "$MANIFEST" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+if [[ "$(realpath -m "$MANIFEST")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
+  cp "$MANIFEST" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+fi
 
 eval "$(
   python3 - "$MANIFEST" <<'PY'
@@ -709,18 +721,55 @@ fi
 
 download_asset() {
   local asset="$1"
+  local expected="${2:-}"
   if [[ -z "$asset" ]]; then
     return 0
   fi
-  if [[ -f "$RELEASE_DOWNLOAD_DIR/$asset" ]]; then
-    echo "Asset already present in downloads: $asset"
-    return 0
+
+  local path="$RELEASE_DOWNLOAD_DIR/$asset"
+  if [[ -f "$path" ]]; then
+    if [[ -z "$expected" || "$expected" == TO_BE_FILLED_* ]]; then
+      echo "Asset present in downloads (hash not checkable): $asset"
+      return 0
+    fi
+    local actual
+    actual="$(sha256sum "$path" | awk '{print $1}')"
+    if [[ "$actual" == "$expected" ]]; then
+      echo "Asset already present and verified: $asset"
+      return 0
+    else
+      echo "Asset $asset is present but has incorrect hash. Redownloading..."
+      rm -f "$path"
+    fi
   fi
+
   if [[ -f "$RELEASE_ROOT/$asset" ]]; then
-    echo "Found local asset in release root: $asset. Copying to downloads..."
-    cp "$RELEASE_ROOT/$asset" "$RELEASE_DOWNLOAD_DIR/$asset"
-    return 0
+    if [[ "$(realpath -m "$RELEASE_ROOT/$asset")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/$asset")" ]]; then
+      # Verify release root asset first before copying
+      local actual_root=""
+      if [[ -n "$expected" && "$expected" != TO_BE_FILLED_* ]]; then
+        actual_root="$(sha256sum "$RELEASE_ROOT/$asset" | awk '{print $1}')"
+      fi
+      if [[ -z "$expected" || "$expected" == TO_BE_FILLED_* || "$actual_root" == "$expected" ]]; then
+        echo "Found local asset in release root: $asset. Copying to downloads..."
+        cp "$RELEASE_ROOT/$asset" "$RELEASE_DOWNLOAD_DIR/$asset"
+        return 0
+      else
+        echo "Local asset in release root $asset has incorrect hash; will download from GitHub."
+      fi
+    else
+      # They are the same file, check hash
+      local actual_same=""
+      if [[ -n "$expected" && "$expected" != TO_BE_FILLED_* ]]; then
+        actual_same="$(sha256sum "$path" | awk '{print $1}')"
+      fi
+      if [[ -z "$expected" || "$expected" == TO_BE_FILLED_* || "$actual_same" == "$expected" ]]; then
+        echo "Found local asset already in downloads: $asset."
+        return 0
+      fi
+    fi
   fi
+
   echo "Downloading $asset from GitHub..."
   gh release download "$VERSION" --repo "$REPO" --pattern "$asset" --dir "$RELEASE_DOWNLOAD_DIR"
 }
@@ -750,12 +799,12 @@ verify_asset_hash() {
   fi
 }
 
-download_asset "$APP_ASSET"
-download_asset "$RUNTIME_CPU_ASSET"
+download_asset "$APP_ASSET" "$APP_SHA"
+download_asset "$RUNTIME_CPU_ASSET" "$RUNTIME_CPU_SHA"
 verify_asset_hash "$APP_ASSET" "$APP_SHA"
 verify_asset_hash "$RUNTIME_CPU_ASSET" "$RUNTIME_CPU_SHA"
 if [[ "$GPU_MODE" == "cuda" ]]; then
-  download_asset "$RUNTIME_CUDA_ASSET"
+  download_asset "$RUNTIME_CUDA_ASSET" "$RUNTIME_CUDA_SHA"
   verify_asset_hash "$RUNTIME_CUDA_ASSET" "$RUNTIME_CUDA_SHA"
 fi
 
@@ -802,7 +851,9 @@ if [[ -d "$ROOT/runtime" ]]; then mv "$ROOT/runtime" "$ROOT/runtime.prev"; fi
 mv "$ROOT/app.new" "$ROOT/app"
 mv "$ROOT/runtime.new" "$ROOT/runtime"
 
-cp "$MANIFEST" "$ROOT/app/RELEASE_MANIFEST.json"
+if [[ "$(realpath -m "$MANIFEST")" != "$(realpath -m "$ROOT/app/RELEASE_MANIFEST.json")" ]]; then
+  cp "$MANIFEST" "$ROOT/app/RELEASE_MANIFEST.json"
+fi
 printf '%s\n' "$VERSION" > "$ROOT/app/APP_VERSION"
 printf '%s\n' "$GPU_MODE" > "$ROOT/app/RUNTIME_VARIANT"
 write_installed_asset_state "$MANIFEST"
