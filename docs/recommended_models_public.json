@@ -1,0 +1,124 @@
+{
+  "schema_version": 2,
+  "updated_at": "2026-07-04",
+  "disclaimer": "Curated defaults for new testers based on observed local verification, not a vendor benchmark. Free/local engines are preferred; a paid cloud engine (Sarvam) is recommended only where the free option is known to be broken or unreliable. Testers can still pick any installed/ready engine or voice per language in Settings.",
+  "inference": {
+    "service": "llama_cpp",
+    "label": "llama.cpp (local GGUF model)",
+    "rationale": "Free, local-first default with no per-call cost or cloud data exposure; verified across live sessions. Gemini/NVIDIA NIM remain opt-in paid cloud alternatives if higher multilingual fluency is needed."
+  },
+  "languages": [
+    {
+      "language_code": "en",
+      "label": "English",
+      "stt": {
+        "engine": "nemotron_onnx",
+        "label": "Nemotron (Parakeet ASR)",
+        "rationale": "Free, local engine, verified end-to-end on real English call audio."
+      },
+      "tts": {
+        "voice_id": "v_en_female_1",
+        "label": "Lessac (Piper)",
+        "rationale": "Free, high-quality local Piper voice; no cloud dependency needed for English."
+      }
+    },
+    {
+      "language_code": "hi",
+      "label": "Hindi",
+      "stt": {
+        "engine": "nemotron_onnx",
+        "label": "Nemotron (Parakeet ASR)",
+        "rationale": "Free, local engine verified end-to-end on real Hindi call audio; no need for the paid Sarvam STT."
+      },
+      "tts": {
+        "voice_id": "v_hi_female_1",
+        "label": "Priyamvada (Piper)",
+        "rationale": "Free, local Piper voice confirmed working for Hindi; Sarvam Bulbul is a paid alternative if higher fidelity is needed."
+      }
+    },
+    {
+      "language_code": "bn",
+      "label": "Bengali",
+      "stt": {
+        "engine": "sarvam",
+        "label": "Sarvam STT",
+        "rationale": "Paid, used because the bundled free local sherpa/Whisper STT model fails on Bengali (empty transcripts)."
+      },
+      "tts": {
+        "voice_id": "v_bn_female_mms_1",
+        "label": "MMS Bengali Female (Sherpa)",
+        "rationale": "Free, local sherpa MMS voice; no known quality issue for Bengali TTS specifically (only STT is broken)."
+      }
+    },
+    {
+      "language_code": "mr",
+      "label": "Marathi",
+      "stt": {
+        "engine": "sarvam",
+        "label": "Sarvam STT",
+        "rationale": "Paid, used because the bundled free local sherpa/Whisper STT model produces garbled Marathi output."
+      },
+      "tts": {
+        "voice_id": "v_mr_female_mms_1",
+        "label": "MMS Marathi Female (Sherpa)",
+        "rationale": "Free, local sherpa MMS voice; no known quality issue for Marathi TTS specifically (only STT is affected)."
+      }
+    },
+    {
+      "language_code": "te",
+      "label": "Telugu",
+      "stt": {
+        "engine": "sherpa_onnx",
+        "label": "Sherpa (Whisper large-v3 int8)",
+        "rationale": "Free, local engine; not independently quality-verified but no known failure. Switch to Sarvam if transcription quality is insufficient in practice."
+      },
+      "tts": {
+        "voice_id": "v_te_female_mms_1",
+        "label": "MMS Telugu Female (Sherpa)",
+        "rationale": "Free, local sherpa MMS voice."
+      }
+    },
+    {
+      "language_code": "ta",
+      "label": "Tamil",
+      "stt": {
+        "engine": "sherpa_onnx",
+        "label": "Sherpa (Whisper large-v3 int8)",
+        "rationale": "Free, local engine verified to produce correct-script Tamil transcripts."
+      },
+      "tts": {
+        "voice_id": "v_ta_female_mms_1",
+        "label": "MMS Tamil Female (Sherpa)",
+        "rationale": "Free, local sherpa MMS voice."
+      }
+    },
+    {
+      "language_code": "gu",
+      "label": "Gujarati",
+      "stt": {
+        "engine": "sarvam",
+        "label": "Sarvam STT",
+        "rationale": "Paid, used because the bundled free local sherpa/Whisper STT model returns empty transcripts on Gujarati."
+      },
+      "tts": {
+        "voice_id": "v_gu_female_mms_1",
+        "label": "MMS Gujarati Female (Sherpa)",
+        "rationale": "Free, local sherpa MMS voice confirmed working for Gujarati; no need for the paid Sarvam Bulbul voice."
+      }
+    },
+    {
+      "language_code": "kn",
+      "label": "Kannada",
+      "stt": {
+        "engine": "sherpa_onnx",
+        "label": "Sherpa (Whisper large-v3 int8)",
+        "rationale": "Free, local engine; not independently quality-verified but no known failure. Switch to Sarvam if transcription quality is insufficient in practice."
+      },
+      "tts": {
+        "voice_id": "v_kn_female_mms_1",
+        "label": "MMS Kannada Female (Sherpa)",
+        "rationale": "Free, local sherpa MMS voice."
+      }
+    }
+  ]
+}

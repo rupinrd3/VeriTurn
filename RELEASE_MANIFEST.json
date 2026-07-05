@@ -1,0 +1,42 @@
+{
+  "release_version": "v2.0.0",
+  "minimum_ubuntu": "22.04",
+  "tested_ubuntu": [
+    "22.04",
+    "24.04"
+  ],
+  "app": {
+    "asset": "veriturn-studio-v2.0.0-linux-x64.tar.gz",
+    "sha256": "3d69e9d38dc6833f2f2c41977c37b8af72573f13db2e969fde6ad2f8537ba28a",
+    "git_commit": "06461c0bc34406415fe2fbc8f307ad429bc6617e",
+    "git_dirty": true,
+    "asset_mode": "release_embedded_assets"
+  },
+  "runtime_tools": {
+    "cpu": {
+      "asset": "veriturn-runtime-tools-v2.0.0-linux-x64-cpu.tar.gz",
+      "sha256": "c844c9e72e8d0a19ea19583c0a6595ff3420eb4432d5afe1f0d4f20acb62b2ac"
+    },
+    "cuda": {
+      "asset": "veriturn-runtime-tools-v2.0.0-linux-x64-cuda.tar.gz",
+      "sha256": "e26a64fc8900b6e6b9522b8e30193dc7e7ac46e16a6f0a81ea8444ebf2c84709",
+      "note": "Optional GPU-acceleration overlay extracted on top of the cpu bundle. Only downloaded when an NVIDIA GPU is detected (nvidia-smi)."
+    },
+    "tool_versions": {}
+  },
+  "protected_assets": {
+    "asset_catalog_version": "protected_assets_v1",
+    "source_hashes": {
+      "scenarios/risk_objectives.json": "259ee1a0b6396e7fe2c25738d89a9f2e908482e7523f64df9fad95e78c86f6dc",
+      "scenarios/personas.json": "5e7894feaae143de44953ffd0eb2cc207eb9362cb326afd6e21a4f2deb74e508",
+      "scenarios/persona_states.json": "8f0b38e9d914495dd93a38ad060df5752c14b13e667007ddace5d195fac4c8cc",
+      "scenarios/bot_move_taxonomy.json": "b1fa50ca2ba14b7ce8a0bec129d908be5f87bb5f73c08a17e86c5e7a88bfe143",
+      "scenarios/language_variants/en.json": "65b356cda56e050cee9a1f5eb1b14937b747d40cd2b5511dae53541402d0f90b",
+      "scenarios/language_variants/hi.json": "250ac600c4b0a01dbe2cfa44d5bd4e1fc75b4b25bc59bf1cf6d9e89f433eaeb1",
+      "scenarios/language_variants/language_packs.json": "16ddf2fb5ed3257da6d0a5e52f23e222967806bc488f638ba0b2ec9b030937e3",
+      "prompts/response_generation_prompt.md": "72e5a68d41985ad54605ed70b79cbe4d0f8ec051318577e7eb7817661e4d5891",
+      "prompts/judge_session_prompt.md": "dbd91693276675b46f24586e5e4e2f102eabd8535847a4472d368df942b0a2a8",
+      "compliance/framework_map.json": "7e8a3a0976b080a972c9544de030a6cdee04747b84842ee6ebc8d4aeb316c71b"
+    }
+  }
+}

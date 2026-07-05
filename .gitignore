@@ -1,0 +1,15 @@
+downloads/
+staging/
+app/
+runtime/
+models/
+db/
+evidence/
+logs/
+*.log
+.env
+*.tmp
+*.tar.gz
+*.zip
+veriturn-release-manifest-v*.json
+!.gitkeep

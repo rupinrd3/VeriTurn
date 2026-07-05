@@ -1,0 +1,9 @@
+VeriTurn Studio Limited Evaluation License
+
+By downloading, installing, or using VeriTurn Studio, you accept these terms.
+
+Permitted use is limited to internal evaluation, UAT, and testing of authorized voice-bot workflows. The software must not be used for production collections, bulk dialing, autonomous customer calling campaigns, or contacting real customers unless separately authorized by your organization and legally compliant.
+
+You may not reverse engineer, decompile, disassemble, modify, redistribute, resell, sublicense, or create derivative products from the software.
+
+Do not enter real customer PII unless separately authorized by your organization. Third-party components remain subject to their own licenses.

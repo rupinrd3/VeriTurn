@@ -1,0 +1,84 @@
+{
+  "languages": [
+    {
+      "language_code": "en",
+      "label": "English",
+      "native_label": "English",
+      "enabled": true,
+      "stt_engine": "nemotron_onnx",
+      "tts_engine": "piper",
+      "default_voice_id": "v_en_female_1",
+      "font_key": "latin"
+    },
+    {
+      "language_code": "hi",
+      "label": "Hindi",
+      "native_label": "हिन्दी",
+      "enabled": true,
+      "stt_engine": "nemotron_onnx",
+      "tts_engine": "piper",
+      "default_voice_id": "v_hi_female_1",
+      "font_key": "devanagari"
+    },
+    {
+      "language_code": "bn",
+      "label": "Bengali",
+      "native_label": "বাংলা",
+      "enabled": true,
+      "stt_engine": "sherpa_onnx",
+      "tts_engine": "sherpa_onnx",
+      "default_voice_id": "v_bn_female_mms_1",
+      "font_key": "bengali"
+    },
+    {
+      "language_code": "mr",
+      "label": "Marathi",
+      "native_label": "मराठी",
+      "enabled": true,
+      "stt_engine": "sherpa_onnx",
+      "tts_engine": "sherpa_onnx",
+      "default_voice_id": "v_mr_female_mms_1",
+      "font_key": "devanagari"
+    },
+    {
+      "language_code": "te",
+      "label": "Telugu",
+      "native_label": "తెలుగు",
+      "enabled": true,
+      "stt_engine": "sherpa_onnx",
+      "tts_engine": "sherpa_onnx",
+      "default_voice_id": "v_te_female_mms_1",
+      "font_key": "telugu"
+    },
+    {
+      "language_code": "ta",
+      "label": "Tamil",
+      "native_label": "தமிழ்",
+      "enabled": true,
+      "stt_engine": "sherpa_onnx",
+      "tts_engine": "sherpa_onnx",
+      "default_voice_id": "v_ta_female_mms_1",
+      "font_key": "tamil"
+    },
+    {
+      "language_code": "gu",
+      "label": "Gujarati",
+      "native_label": "ગુજરાતી",
+      "enabled": true,
+      "stt_engine": "sherpa_onnx",
+      "tts_engine": "sherpa_onnx",
+      "default_voice_id": "v_gu_female_mms_1",
+      "font_key": "gujarati"
+    },
+    {
+      "language_code": "kn",
+      "label": "Kannada",
+      "native_label": "ಕನ್ನಡ",
+      "enabled": true,
+      "stt_engine": "sherpa_onnx",
+      "tts_engine": "sherpa_onnx",
+      "default_voice_id": "v_kn_female_mms_1",
+      "font_key": "kannada"
+    }
+  ]
+}
