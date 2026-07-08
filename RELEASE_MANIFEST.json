@@ -1,25 +1,25 @@
 {
-  "release_version": "v2.0.0",
+  "release_version": "v2.1.0",
   "minimum_ubuntu": "22.04",
   "tested_ubuntu": [
     "22.04",
     "24.04"
   ],
   "app": {
-    "asset": "veriturn-studio-v2.0.0-linux-x64.tar.gz",
-    "sha256": "9b15a0dca37a1193100b0fbc5398a8776e793ea5de9086a3bdf3071785b94fb0",
-    "git_commit": "f19df6ef23cdc8fd76bbb962d181347df855f793",
-    "git_dirty": false,
+    "asset": "veriturn-studio-v2.1.0-linux-x64.tar.gz",
+    "sha256": "ddccd3d77d6aeb2b4e6af9c97e1ba696ea98bad11ecc619af4b5aad458cd17d4",
+    "git_commit": "f4478e19b3b00423f92d2ee8af03852ca1810401",
+    "git_dirty": true,
     "asset_mode": "release_embedded_assets"
   },
   "runtime_tools": {
     "cpu": {
-      "asset": "veriturn-runtime-tools-v2.0.0-linux-x64-cpu.tar.gz",
-      "sha256": "92ba50617f5bc6e117808a7009104e027f0c31a7e3751c815c7ecd87c38caec6"
+      "asset": "veriturn-runtime-tools-v2.1.0-linux-x64-cpu.tar.gz",
+      "sha256": "e442336b39ac675cd69bfc7b52a067c2fade2616e7972ed6fe3824ab516734ad"
     },
     "cuda": {
-      "asset": "veriturn-runtime-tools-v2.0.0-linux-x64-cuda.tar.gz",
-      "sha256": "c3ea840b7f4f60dc4bd653262e5658edb23e9170c98a922bec4fedcc70ca04ab",
+      "asset": "veriturn-runtime-tools-v2.1.0-linux-x64-cuda.tar.gz",
+      "sha256": "e08ea7142a50e3e494526b9fa8ea047b114bd897cddec1a60cfea689bc0533f3",
       "note": "Optional GPU-acceleration overlay extracted on top of the cpu bundle. Only downloaded when an NVIDIA GPU is detected (nvidia-smi)."
     },
     "tool_versions": {}
@@ -27,15 +27,17 @@
   "protected_assets": {
     "asset_catalog_version": "protected_assets_v1",
     "source_hashes": {
-      "scenarios/risk_objectives.json": "259ee1a0b6396e7fe2c25738d89a9f2e908482e7523f64df9fad95e78c86f6dc",
-      "scenarios/personas.json": "5e7894feaae143de44953ffd0eb2cc207eb9362cb326afd6e21a4f2deb74e508",
+      "scenarios/risk_objectives.json": "0d841495f679c6bd593ff86b8a8e870603715d64cdcbb136b69672c3ef3fd5fa",
+      "scenarios/personas.json": "41f2dd0427d6807e75bd561e3f2474d3b100923590360297ab02cea4d758bd63",
       "scenarios/persona_states.json": "8f0b38e9d914495dd93a38ad060df5752c14b13e667007ddace5d195fac4c8cc",
       "scenarios/bot_move_taxonomy.json": "b1fa50ca2ba14b7ce8a0bec129d908be5f87bb5f73c08a17e86c5e7a88bfe143",
+      "scenarios/objective_attack_templates.json": "1e706a86009efdb536dab1e2515039d533224b9db00e20ec1fe3031ef7915264",
+      "scenarios/persona_tactic_profiles.json": "79229c9623aeec58a373567a90fa579dc61a99bd59c0f34d251ec201288a013d",
       "scenarios/language_variants/en.json": "65b356cda56e050cee9a1f5eb1b14937b747d40cd2b5511dae53541402d0f90b",
       "scenarios/language_variants/hi.json": "250ac600c4b0a01dbe2cfa44d5bd4e1fc75b4b25bc59bf1cf6d9e89f433eaeb1",
       "scenarios/language_variants/language_packs.json": "16ddf2fb5ed3257da6d0a5e52f23e222967806bc488f638ba0b2ec9b030937e3",
-      "prompts/response_generation_prompt.md": "72e5a68d41985ad54605ed70b79cbe4d0f8ec051318577e7eb7817661e4d5891",
-      "prompts/judge_session_prompt.md": "dbd91693276675b46f24586e5e4e2f102eabd8535847a4472d368df942b0a2a8",
+      "prompts/response_generation_prompt.md": "7874bcc16af733f72e6d5f2538e8268240e2628f1d5093e40863a8c8d61e900d",
+      "prompts/judge_session_prompt.md": "9a4429a352de4efb2c9f63448a13eb995d2b659dad868c4683b422dc5a198a00",
       "compliance/framework_map.json": "7e8a3a0976b080a972c9544de030a6cdee04747b84842ee6ebc8d4aeb316c71b"
     }
   }
