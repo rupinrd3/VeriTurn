@@ -98,6 +98,11 @@ downloads the exact app and runtime binaries when they are missing or stale,
 verifies their integrity, sets up directories under `~/.veriturn`, downloads
 default open-license models, and configures PipeWire audio routing roles.
 
+To upgrade the application to a specific version (e.g., `v2.2.0`), you can specify the target version using the `--version` flag:
+```bash
+./scripts/setup_ubuntu.sh --version v2.2.0
+```
+
 ### 3. Launch
 Launch the application using the setup-provided script:
 ```bash
