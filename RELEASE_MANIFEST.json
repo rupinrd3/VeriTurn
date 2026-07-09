@@ -7,19 +7,19 @@
   ],
   "app": {
     "asset": "veriturn-studio-v2.2.0-linux-x64.tar.gz",
-    "sha256": "1afe6426d55390c0eff62c81d92cf3458d4804e81e41a2203484d0e941cd90db",
-    "git_commit": "a040d37c028f9673dc9aa0d8dc65e1884426ef7e",
+    "sha256": "cf79dbe16f331ee5c5729f1bde7711d367471b8dbdee5e4e1fcdaab5439a1013",
+    "git_commit": "38670e7491a4c9f5fc4048eff484e011fe2577d6",
     "git_dirty": false,
     "asset_mode": "release_embedded_assets"
   },
   "runtime_tools": {
     "cpu": {
       "asset": "veriturn-runtime-tools-v2.2.0-linux-x64-cpu.tar.gz",
-      "sha256": "92c5645beafba7ecf9f16e59b1463142670a657a2789b01a6dc35e7a515538bb"
+      "sha256": "8215630ec763d3c67a3866b61e91eae0dad62a52b8fb701264eb973e915096ce"
     },
     "cuda": {
       "asset": "veriturn-runtime-tools-v2.2.0-linux-x64-cuda.tar.gz",
-      "sha256": "b9fb9b1bd394c0bb3738e683a110c0d5e024d3a61378187c97c5d1d102fe71cf",
+      "sha256": "5265ce866cb36303e80127ff3e5551536cd87ff2cd78019575cdfe19b0b4b859",
       "note": "Optional GPU-acceleration overlay extracted on top of the cpu bundle. Only downloaded when an NVIDIA GPU is detected (nvidia-smi)."
     },
     "tool_versions": {}

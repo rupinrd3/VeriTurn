@@ -98,12 +98,14 @@ downloads the exact app and runtime binaries when they are missing or stale,
 verifies their integrity, sets up directories under `~/.veriturn`, downloads
 default open-license models, and configures PipeWire audio routing roles.
 
-To upgrade the application to a specific version (e.g., `v2.2.0`), you can specify the target version using the `--version` flag:
+### 3. Upgrading the Application
+To upgrade the application to a specific version (such as `v2.2.0`), you can specify the target version explicitly with the `--version` or `--upgrade` flag:
 ```bash
-./scripts/setup_ubuntu.sh --version v2.2.0
+scripts/setup_ubuntu.sh --version v2.2.0
 ```
+This will fetch the release manifest and required assets for that version from GitHub, back up your local SQLite database automatically, and safely install the upgrade without overwriting your local API keys or models.
 
-### 3. Launch
+### 4. Launch
 Launch the application using the setup-provided script:
 ```bash
 scripts/launch_veriturn.sh
