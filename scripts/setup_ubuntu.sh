@@ -34,6 +34,10 @@ while [[ $# -gt 0 ]]; do
       VERSION="${2:-}"
       shift 2
       ;;
+    --version=*|--upgrade=*)
+      VERSION="${1#*=}"
+      shift
+      ;;
     --verify)
       VERIFY_ONLY=1
       shift
@@ -650,24 +654,48 @@ MANIFEST=""
 # Check downloads directory first
 MANIFEST_IN_DOWNLOADS="$(find "$RELEASE_DOWNLOAD_DIR" -maxdepth 1 -type f -name 'veriturn-release-manifest-*.json' | head -n 1 || true)"
 if [[ -n "$MANIFEST_IN_DOWNLOADS" ]]; then
-  MANIFEST="$MANIFEST_IN_DOWNLOADS"
-elif [[ -f "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json" ]]; then
-  MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+  MANIFEST_VER="$(read_json_field_from_file "$MANIFEST_IN_DOWNLOADS" "release_version")"
+  if [[ "$MANIFEST_VER" == "$VERSION" ]]; then
+    MANIFEST="$MANIFEST_IN_DOWNLOADS"
+  fi
 fi
+
+if [[ -z "$MANIFEST" ]]; then
+  if [[ -f "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json" ]]; then
+    MANIFEST_VER="$(read_json_field_from_file "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json" "release_version")"
+    if [[ "$MANIFEST_VER" == "$VERSION" ]]; then
+      MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    else
+      # Remove stale/incorrect manifest from a previous run
+      rm -f "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    fi
+  fi
+fi
+
 
 # Check release root next
 if [[ -z "$MANIFEST" ]]; then
   MANIFEST_IN_ROOT="$(find "$RELEASE_ROOT" -maxdepth 1 -type f -name 'veriturn-release-manifest-*.json' | head -n 1 || true)"
   if [[ -n "$MANIFEST_IN_ROOT" ]]; then
-    if [[ "$(realpath -m "$MANIFEST_IN_ROOT")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
-      cp "$MANIFEST_IN_ROOT" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+    MANIFEST_VER="$(read_json_field_from_file "$MANIFEST_IN_ROOT" "release_version")"
+    if [[ "$MANIFEST_VER" == "$VERSION" ]]; then
+      if [[ "$(realpath -m "$MANIFEST_IN_ROOT")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
+        cp "$MANIFEST_IN_ROOT" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+      fi
+      MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
     fi
-    MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
-  elif [[ -f "$RELEASE_ROOT/RELEASE_MANIFEST.json" ]]; then
-    if [[ "$(realpath -m "$RELEASE_ROOT/RELEASE_MANIFEST.json")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
-      cp "$RELEASE_ROOT/RELEASE_MANIFEST.json" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+  fi
+fi
+
+if [[ -z "$MANIFEST" ]]; then
+  if [[ -f "$RELEASE_ROOT/RELEASE_MANIFEST.json" ]]; then
+    MANIFEST_VER="$(read_json_field_from_file "$RELEASE_ROOT/RELEASE_MANIFEST.json" "release_version")"
+    if [[ "$MANIFEST_VER" == "$VERSION" ]]; then
+      if [[ "$(realpath -m "$RELEASE_ROOT/RELEASE_MANIFEST.json")" != "$(realpath -m "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json")" ]]; then
+        cp "$RELEASE_ROOT/RELEASE_MANIFEST.json" "$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
+      fi
+      MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
     fi
-    MANIFEST="$RELEASE_DOWNLOAD_DIR/RELEASE_MANIFEST.json"
   fi
 fi
 
