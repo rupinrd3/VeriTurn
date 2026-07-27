@@ -477,7 +477,24 @@ print_final_summary() {
     check_component "Noto Indic fonts" miss "sudo apt install -y fonts-noto fonts-noto-core fonts-noto-ui-core fonts-noto-extra"
   fi
   [[ -f "$ROOT/.env" ]] && check_component ".env API key template" ok || check_component ".env API key template" miss "re-run installer"
-  for key in GEMINI_API_KEY NVIDIA_API_KEY SARVAM_API_KEY; do
+  for key in GEMINI_API_KEY NVIDIA_API_KEY SARVAM_API_KEY GNANI_API_KEY; do
+    if grep -Eq "^${key}=.+" "$ROOT/.env" 2>/dev/null; then
+      check_component "$key" ok
+    else
+      check_component "$key" skip
+    fi
+  done
+
+  echo
+  echo "Agentic AI mode (VOIP; optional — only required for Agentic mode)"
+  [[ -x "$ROOT/runtime/voice-runner/linux-x64/run-voice-runner.sh" ]] && check_component "Bundled voice-runner" ok || check_component "Bundled voice-runner" miss "re-run installer to repair the runtime bundle"
+  command -v cloudflared >/dev/null 2>&1 && check_component "cloudflared executable" ok || check_component "cloudflared executable" miss "see Agentic AI mode guidance above"
+  _agentic_ports_ok=true
+  for _p in 8090 8091 8092; do
+    if command -v ss >/dev/null 2>&1 && ss -ltn 2>/dev/null | grep -qE ":${_p}\b"; then _agentic_ports_ok=false; fi
+  done
+  $_agentic_ports_ok && check_component "Agentic loopback ports 8090-8092 free" ok || check_component "Agentic loopback ports 8090-8092 free" miss "stop the conflicting local process"
+  for key in TWILIO_ACCOUNT_SID PLIVO_AUTH_ID; do
     if grep -Eq "^${key}=.+" "$ROOT/.env" 2>/dev/null; then
       check_component "$key" ok
     else
@@ -490,6 +507,7 @@ print_final_summary() {
   echo "  Launch: $RELEASE_ROOT/scripts/launch_veriturn.sh"
   echo "  Audio diagnostics: $RELEASE_ROOT/scripts/check_ubuntu_audio.sh"
   echo "  Model repair/retry: $RELEASE_ROOT/scripts/download_default_models.sh"
+  echo "  Agentic VOIP diagnostic (non-dialing): $RELEASE_ROOT/scripts/check_agentic_voip.sh"
   echo "  In-app: Settings -> Global Health Check"
 }
 
@@ -520,6 +538,61 @@ if dpkg-query -W -f='${Status}' fonts-noto-extra 2>/dev/null | grep -q "install 
 else
   echo "Warning: fonts-noto-extra not installed — Bengali/Devanagari/Telugu/etc. may render as boxes in the transcript."
 fi
+
+echo
+echo "== Agentic AI mode (VOIP): cloudflared =="
+echo "Agentic AI mode places test calls over Twilio/Plivo through a locally managed"
+echo "Cloudflare Tunnel. The voice-runner itself is already bundled with this release"
+echo "(a self-contained Python environment under \$HOME/.veriturn/runtime/voice-runner) —"
+echo "only cloudflared needs separate installation. Skip this if you only use Human mode."
+echo
+if command -v cloudflared >/dev/null 2>&1; then
+  echo "cloudflared found: $(command -v cloudflared)"
+else
+  echo "cloudflared not found. Install one of:"
+  echo
+  echo "    # Option A — apt repo (recommended, requires sudo)"
+  echo "    curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null"
+  echo "    echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared $(lsb_release -cs 2>/dev/null || echo any) main' | sudo tee /etc/apt/sources.list.d/cloudflared.list"
+  echo "    sudo apt update && sudo apt install -y cloudflared"
+  echo
+  ARCH_CF="$(uname -m)"
+  case "$ARCH_CF" in
+    x86_64) CF_ARCH="amd64" ;;
+    aarch64|arm64) CF_ARCH="arm64" ;;
+    *) CF_ARCH="" ;;
+  esac
+  if [[ -n "$CF_ARCH" ]]; then
+    echo "    # Option B — direct binary, no sudo (installs to ~/.local/bin/cloudflared)"
+    echo "    curl -L -o ~/.local/bin/cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${CF_ARCH}"
+    echo "    chmod +x ~/.local/bin/cloudflared"
+  fi
+  echo
+  echo "Then set the cloudflared executable path, tunnel name, and config path under Settings > Agentic VOIP."
+fi
+echo
+echo "== Public tunnel: Quick (default, zero cost) vs Named (optional) =="
+echo "A) Quick Tunnel — default / zero cost (recommended for lab live dials)"
+echo "   No domain, no cloudflared login, no VERITURN_PUBLIC_BASE_URL."
+echo "   After install, every app launch:"
+echo "     Settings tunnel mode = Quick → Setup Checks: Start runner → Start free Quick Tunnel"
+echo "   URL is https://*.trycloudflare.com (usually changes each start; re-arm after new URL)."
+echo
+echo "B) Named tunnel — optional stable hostname (requires a domain on Cloudflare)"
+echo "     cloudflared tunnel login"
+echo "     cloudflared tunnel create veriturn-voice"
+echo "     cloudflared tunnel route dns veriturn-voice agentic-voice.YOUR_DOMAIN"
+echo "     VERITURN_PUBLIC_BASE_URL=https://agentic-voice.YOUR_DOMAIN"
+echo "     Settings: tunnel_mode=named + Scaffold tunnel config"
+echo
+if command -v cloudflared >/dev/null 2>&1; then
+  echo "cloudflared is available for Quick Tunnel without further login."
+else
+  echo "Install cloudflared above before starting a Quick Tunnel from the app."
+fi
+echo
+echo "Configure Twilio/Plivo credentials in \$HOME/.veriturn/.env (below) and run"
+echo "  $RELEASE_ROOT/scripts/check_agentic_voip.sh   (non-dialing readiness diagnostic)"
 
 # ──────────────────────────────────────────────────────────────────────────────
 #  GPU detection (for the optional CUDA runtime overlay)
@@ -603,18 +676,40 @@ GEMINI_API_KEY=
 # ── Sarvam ── Indic cloud STT/TTS lane
 SARVAM_API_KEY=
 
-# ── NVIDIA/Sarvam STT readiness probe ──────────────────────────────────────
+# ── Gnani Vachana ── cloud STT (English/Hindi + Other Indic); cloud TTS
+# voices (English/Hindi only)
+GNANI_API_KEY=
+
+# ── NVIDIA/Sarvam/Gnani STT readiness probe ────────────────────────────────
 # A short 16 kHz mono PCM WAV used to verify cloud STT before Setup Check
 # reports it ready. The installer ships this fixture at
 # ~/.veriturn/app/data/probes/nvidia_stt_probe_en.wav by default; only set
 # this if you need a custom probe file.
 # VERITURN_NVIDIA_STT_PROBE_WAV=/path/to/probe.wav
 # VERITURN_SARVAM_STT_PROBE_WAV=/path/to/probe.wav
+# VERITURN_GNANI_STT_PROBE_WAV=/path/to/probe.wav
 
 # ── Custom sidecar paths (only if a runtime binary is installed elsewhere) ──
 # VERITURN_NEMOTRON_STT_CMD=/path/to/veriturn-nemotron-stt
 # VERITURN_SHERPA_STT_CMD=/path/to/sherpa-onnx-offline
 # VERITURN_SHERPA_TTS_CMD=/path/to/sherpa-onnx-offline-tts
+
+# ── Agentic VOIP (test-only; never stored in Settings/evidence) ─────────────
+# Required only for Agentic AI mode. The runner and tunnel are configured in
+# Settings > Agentic VOIP; credentials are env-only. See:
+#   scripts/check_agentic_voip.sh   (non-dialing readiness diagnostic)
+# TWILIO_ACCOUNT_SID=AC...
+# TWILIO_AUTH_TOKEN=...
+# TWILIO_FROM_NUMBER=+15551234567
+# PLIVO_AUTH_ID=...
+# PLIVO_AUTH_TOKEN=...
+# PLIVO_FROM_NUMBER=+15551234567
+# VERITURN_CPAAS_LIVE=0
+# Public tunnel URL:
+# - Default Quick mode (zero cost): leave unset; Start free Quick Tunnel in Setup Checks after app launch.
+# - Optional named mode only (domain on Cloudflare):
+#     cloudflared tunnel login && create veriturn-voice && route dns …
+#     VERITURN_PUBLIC_BASE_URL=https://agentic-voice.YOUR_DOMAIN
 ENV
   chmod 600 "$ROOT/.env"
   echo "Created $ROOT/.env (permissions: 600). Edit it to add API keys: nano $ROOT/.env"

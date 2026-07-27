@@ -14,6 +14,13 @@ export VERITURN_RUNTIME_DIR="${VERITURN_RUNTIME_DIR:-$VERITURN_HOME/runtime}"
 export VERITURN_MODEL_DIR="${VERITURN_MODEL_DIR:-$VERITURN_HOME/models}"
 export LD_LIBRARY_PATH="$VERITURN_RUNTIME_DIR/lib:$VERITURN_RUNTIME_DIR/bin${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
+# The bundled Agentic voice runner (ADR-028) is resolved by the Rust supervisor from a path
+# *relative to the app process's cwd* unless VERITURN_VOICE_RUNNER_DIR is set — and this launcher
+# does not cd into VERITURN_HOME before exec'ing the app binary, so it must be set explicitly here.
+if [[ -z "${VERITURN_VOICE_RUNNER_DIR:-}" && -d "$VERITURN_RUNTIME_DIR/voice-runner/linux-x64" ]]; then
+  export VERITURN_VOICE_RUNNER_DIR="$VERITURN_RUNTIME_DIR/voice-runner/linux-x64"
+fi
+
 DEFAULT_VERITURN_HOME="$HOME/.veriturn"
 if [[ "$VERITURN_HOME" != "$DEFAULT_VERITURN_HOME" ]]; then
   REAL_HOME="$HOME"

@@ -14,6 +14,7 @@ by the installer with mode `600`, owner read/write only):
 GEMINI_API_KEY=
 NVIDIA_API_KEY=
 SARVAM_API_KEY=
+GNANI_API_KEY=
 ```
 
 Edit with:
@@ -34,6 +35,7 @@ fixed.
 | Gemini | `GEMINI_API_KEY` | Live LLM response-option generation, offline translation fallback, LLM-as-a-Judge (advisory) |
 | NVIDIA NIM | `NVIDIA_API_KEY` | Parakeet cloud STT, Nemotron live LLM, Magpie/Chatterbox cloud TTS voices, advisory judge |
 | Sarvam | `SARVAM_API_KEY` | Sarvam cloud STT/TTS lane for Indic languages |
+| Gnani Vachana | `GNANI_API_KEY` | Gnani cloud STT (English/Hindi and Other Indic); Gnani cloud TTS voices (English/Hindi only) |
 
 Get a key:
 
@@ -61,9 +63,10 @@ NVIDIA_NIM_BASE_URL=
 
 # Cloud STT readiness probe overrides (a short 16 kHz mono WAV; the shipped
 # fixture at ~/.veriturn/app/data/probes/nvidia_stt_probe_en.wav is used by
-# default and covers both NVIDIA and Sarvam STT readiness checks)
+# default and covers NVIDIA, Sarvam, and Gnani STT readiness checks)
 VERITURN_NVIDIA_STT_PROBE_WAV=
 VERITURN_SARVAM_STT_PROBE_WAV=
+VERITURN_GNANI_STT_PROBE_WAV=
 
 # Custom sidecar binary paths (only if a runtime binary is installed
 # somewhere other than ~/.veriturn/runtime)

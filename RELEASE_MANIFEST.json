@@ -1,25 +1,25 @@
 {
-  "release_version": "v2.2.0",
+  "release_version": "v3.0.0",
   "minimum_ubuntu": "22.04",
   "tested_ubuntu": [
     "22.04",
     "24.04"
   ],
   "app": {
-    "asset": "veriturn-studio-v2.2.0-linux-x64.tar.gz",
-    "sha256": "cf79dbe16f331ee5c5729f1bde7711d367471b8dbdee5e4e1fcdaab5439a1013",
-    "git_commit": "38670e7491a4c9f5fc4048eff484e011fe2577d6",
+    "asset": "veriturn-studio-v3.0.0-linux-x64.tar.gz",
+    "sha256": "eb012a89bbcc9514b5f36f20a0ffd0a5e9685c98b537d1fd7853fb0aea59bfa2",
+    "git_commit": "f3136f357e1ff1ad0e06e129343a81894f20f5a4",
     "git_dirty": false,
     "asset_mode": "release_embedded_assets"
   },
   "runtime_tools": {
     "cpu": {
-      "asset": "veriturn-runtime-tools-v2.2.0-linux-x64-cpu.tar.gz",
-      "sha256": "8215630ec763d3c67a3866b61e91eae0dad62a52b8fb701264eb973e915096ce"
+      "asset": "veriturn-runtime-tools-v3.0.0-linux-x64-cpu.tar.gz",
+      "sha256": "bf432176cf141e4e653cbb5ad8bd8bec886d25af1f683316f56d3cd4c18404dc"
     },
     "cuda": {
-      "asset": "veriturn-runtime-tools-v2.2.0-linux-x64-cuda.tar.gz",
-      "sha256": "5265ce866cb36303e80127ff3e5551536cd87ff2cd78019575cdfe19b0b4b859",
+      "asset": "veriturn-runtime-tools-v3.0.0-linux-x64-cuda.tar.gz",
+      "sha256": "30cec00cd14efb50fd8361adb1344a5fe88e90efc4f0a3081e1b5868b704b1f2",
       "note": "Optional GPU-acceleration overlay extracted on top of the cpu bundle. Only downloaded when an NVIDIA GPU is detected (nvidia-smi)."
     },
     "tool_versions": {}
@@ -36,8 +36,8 @@
       "scenarios/language_variants/en.json": "65b356cda56e050cee9a1f5eb1b14937b747d40cd2b5511dae53541402d0f90b",
       "scenarios/language_variants/hi.json": "250ac600c4b0a01dbe2cfa44d5bd4e1fc75b4b25bc59bf1cf6d9e89f433eaeb1",
       "scenarios/language_variants/language_packs.json": "16ddf2fb5ed3257da6d0a5e52f23e222967806bc488f638ba0b2ec9b030937e3",
-      "prompts/response_generation_prompt.md": "7874bcc16af733f72e6d5f2538e8268240e2628f1d5093e40863a8c8d61e900d",
-      "prompts/judge_session_prompt.md": "9a4429a352de4efb2c9f63448a13eb995d2b659dad868c4683b422dc5a198a00",
+      "prompts/response_generation_prompt.md": "48c6b1cf30dae9977260dd1dd0940b3c0347641c3ad045de56cf12489726114c",
+      "prompts/judge_session_prompt.md": "e6fe0505dc7e7d3e86035c77a60cedaf6868c130f0b76303126f535f145ad71c",
       "prompts/program_findings_prompt.md": "5253d900ba787604669d8abe1e399fb460dc0391a2e229975a6c72945987bfec",
       "compliance/framework_map.json": "90623431c4ad650448f44830d52ff1697e2144cb8b814271317b907f3b51a0be"
     }

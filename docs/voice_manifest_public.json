@@ -493,6 +493,84 @@
       "local_only": false,
       "model_path": "sarvam/bulbul:v3/shubh",
       "supports_live_tts": true
+    },
+    {
+      "voice_id": "Gnani-Vachana.EN-IN.Pranav",
+      "display_name": "Gnani Vachana English (Pranav)",
+      "engine": "gnani_vachana_tts",
+      "language": "English",
+      "gender": "unknown",
+      "style": "neutral",
+      "quality": "cloud_optional",
+      "quality_status": "opt_in_cloud",
+      "local_only": false,
+      "model_path": "gnani/vachana-voice-v3/Pranav",
+      "supports_live_tts": true
+    },
+    {
+      "voice_id": "Gnani-Vachana.EN-IN.Karan",
+      "display_name": "Gnani Vachana English (Karan)",
+      "engine": "gnani_vachana_tts",
+      "language": "English",
+      "gender": "unknown",
+      "style": "neutral",
+      "quality": "cloud_optional",
+      "quality_status": "opt_in_cloud",
+      "local_only": false,
+      "model_path": "gnani/vachana-voice-v3/Karan",
+      "supports_live_tts": true
+    },
+    {
+      "voice_id": "Gnani-Vachana.EN-IN.Deepak",
+      "display_name": "Gnani Vachana English (Deepak)",
+      "engine": "gnani_vachana_tts",
+      "language": "English",
+      "gender": "unknown",
+      "style": "neutral",
+      "quality": "cloud_optional",
+      "quality_status": "opt_in_cloud",
+      "local_only": false,
+      "model_path": "gnani/vachana-voice-v3/Deepak",
+      "supports_live_tts": true
+    },
+    {
+      "voice_id": "Gnani-Vachana.HI-IN.Kaveri",
+      "display_name": "Gnani Vachana Hindi (Kaveri)",
+      "engine": "gnani_vachana_tts",
+      "language": "Hindi",
+      "gender": "unknown",
+      "style": "neutral",
+      "quality": "cloud_optional",
+      "quality_status": "opt_in_cloud",
+      "local_only": false,
+      "model_path": "gnani/vachana-voice-v3/Kaveri",
+      "supports_live_tts": true
+    },
+    {
+      "voice_id": "Gnani-Vachana.HI-IN.Simran",
+      "display_name": "Gnani Vachana Hindi (Simran)",
+      "engine": "gnani_vachana_tts",
+      "language": "Hindi",
+      "gender": "unknown",
+      "style": "neutral",
+      "quality": "cloud_optional",
+      "quality_status": "opt_in_cloud",
+      "local_only": false,
+      "model_path": "gnani/vachana-voice-v3/Simran",
+      "supports_live_tts": true
+    },
+    {
+      "voice_id": "Gnani-Vachana.HI-IN.Riya",
+      "display_name": "Gnani Vachana Hindi (Riya)",
+      "engine": "gnani_vachana_tts",
+      "language": "Hindi",
+      "gender": "unknown",
+      "style": "neutral",
+      "quality": "cloud_optional",
+      "quality_status": "opt_in_cloud",
+      "local_only": false,
+      "model_path": "gnani/vachana-voice-v3/Riya",
+      "supports_live_tts": true
     }
   ]
 }

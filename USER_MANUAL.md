@@ -91,7 +91,7 @@ Ensure your model directories are populated appropriately:
 *   **Translation Models (`~/.veriturn/models/translation/`):** Pinned CTranslate2 / IndicTrans2 folders are stored here for offline Indic-to-English translation.
 
 ### API Keys and Cloud Configurations
-If you choose to use cloud APIs (Gemini, NVIDIA NIM, or Sarvam) instead of local hardware inference:
+If you choose to use cloud APIs (Gemini, NVIDIA NIM, Sarvam, or Gnani Vachana) instead of local hardware inference:
 1.  Open `~/.veriturn/.env` in a text editor.
 2.  Provide your API keys in the appropriate fields:
     ```env

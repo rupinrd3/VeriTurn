@@ -92,6 +92,11 @@ Then open **Settings → Setup Check** and **Global Health Check** to confirm
 every dependency (ADB, audio route, STT/LLM/TTS engines, storage, recording
 authorization) is ready before starting a live call.
 
+For the separately armed Agentic VOIP mode, see
+`agentic_voip_verification.md`. It is not certified by installation alone:
+provider-specific manual verification remains required and uses only approved
+test numbers.
+
 ## 6. Verify an install without reinstalling
 
 ```bash
